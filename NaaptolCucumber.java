@@ -7,12 +7,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -23,14 +24,15 @@ public class NaaptolCucumber {
 	ExtentReports extent;
 	ExtentTest test;
 	
-	void setUp() {
-		ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReportDemo.html");
-		
-		// creates the object of ExtentReports class
+	@Before
+	public void setUp() {
+		ExtentSparkReporter spark = new ExtentSparkReporter("NaaptolReport.html");
 		extent = new ExtentReports();
-		
-		// Attach HTML reporter to the extentreports variable
 		extent.attachReporter(spark);
+		
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));	
 	}
 	
 	@Given("I am on the website")
@@ -38,17 +40,14 @@ public class NaaptolCucumber {
 		
 		test = extent.createTest("Google opens", "validates google page");
 		
-		driver = new ChromeDriver();
-		driver.get("https://www.naaptol.com/shop-online/home-kitchen-appliances.html");
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));		
+		driver.get("https://www.naaptol.com/shop-online/home-kitchen-appliances.html");		
 	    
 		test.pass("Navigated to the page as expected...!!");
 	}
 
 	@Given("I input a product in the search bar")
 	public void i_input_a_product_in_the_search_bar() {
-	    driver.findElement(By.id("#header_search_text")).sendKeys("juicer");
+	    driver.findElement(By.id("header_search_text")).sendKeys("juicer");
 	}
 	
 	@When("I click the search button")
@@ -114,8 +113,13 @@ public class NaaptolCucumber {
 	@Then("I verify the expected results")
 	public void i_verify_the_expected_results() {
 	    System.out.println("Test cases passed");
-	    driver.quit();
-		driver.flush();
 	}
+	
+	@After
+	public void quitDriver() {
+		driver.quit();
+		extent.flush();
+	}
+	
 	
 }
