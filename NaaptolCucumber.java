@@ -39,9 +39,7 @@ public class NaaptolCucumber {
 	public void i_am_on_the_website() {
 		
 		test = extent.createTest("Google opens", "validates google page");
-		
 		driver.get("https://www.naaptol.com/shop-online/home-kitchen-appliances.html");		
-	    
 		test.pass("Navigated to the page as expected...!!");
 	}
 
@@ -77,7 +75,7 @@ public class NaaptolCucumber {
 	
 	@Then("I verify the specific details")
 	public void i_verify_the_specific_details() {
-		driver.findElement(By.id("pincodeDeliveryId_0")).sendKeys(String.valueOf(110001));
+	    driver.findElement(By.id("pincodeDeliveryId_0")).sendKeys(String.valueOf(110001));
 	    driver.findElement(By.xpath("//a[@onclick=\"javascript:bestOfferOnPincode.getBestOfferOnDelivery(null,'12611910', 'Portable Electric Grinder (EG1)');\"]")).click();
 	    driver.findElement(By.id("qv_right_id")).click();
 	    driver.findElement(By.className("fancybox-button fancybox-close-small"));
